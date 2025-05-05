@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: staging_sample_1
+    description: "A summary model selecting id, name, and created_at from raw data."
+    columns:
+      - name: id
+        description: "The unique identifier for the record."
+      - name: name
+        description: "The name associated with the record."
+      - name: created_at
+        description: "The timestamp when the record was created."

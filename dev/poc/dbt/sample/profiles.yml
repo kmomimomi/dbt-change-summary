@@ -1,0 +1,6 @@
+sample:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      schema: main  # Replace with your desired schema

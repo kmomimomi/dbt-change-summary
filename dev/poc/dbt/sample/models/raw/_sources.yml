@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: duckdb
+    schema: information_schema
+    tables:
+      - name: tables
+      - name: columns
+      - name: views
