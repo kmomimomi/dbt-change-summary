@@ -61,7 +61,7 @@ source:sample.duckdb.views
 
 | # | filename | descriptions |
 | 1 | old_manifest.json / old_catalog.json | サンプルモデルのみふくまれた状態 |
-| 2 | add_nodes_manifest.json / add_nodes_catalog.json | model, seed を追加した状態 |
-| 3 | alter_nodes_manifest.json / alter_nodes_catalog.json | model, seed の設定を変更した状態 | 
-| 4 | add_columns_manifest.json / add_columns_catalog.json | model, seed にカラムを追加した状態 |
-| 5 | alter_columns_manifest.json / alter_columns_catalog.json | model, seed のカラムを変更した状態 |
+| 2 | add_nodes_manifest.json / add_nodes_catalog.json | model, seed を追加した状態(mart_sample_2, seed_sample_2) |
+| 3 | alter_nodes_manifest.json / alter_nodes_catalog.json | model, seed の設定を変更した状態(materialized, config, metaを一部変更) | 
+| 4 | add_columns_manifest.json / add_columns_catalog.json | model, seed にカラムを追加した状態(mart でカラム名変更と型変更、seedでカラム追加と型変更) |
+| 7 | project_manifest.json / project_catalog.json | dbt_projectの設定変更がされた状態 |
