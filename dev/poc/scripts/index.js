@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const nunjucks = require('nunjucks');
+const { generateExcelReport } = require('./excel-generator');
 
 // Configure Nunjucks
 nunjucks.configure({ autoescape: false });
@@ -122,10 +123,10 @@ if (require.main === module) {
   // Expect four arguments: oldManifest newManifest oldCatalog newCatalog
   const args = process.argv.slice(2);
   if (args.length < 4) {
-    console.error('Usage: node index.js <oldManifest> <newManifest> <oldCatalog> <newCatalog>');
+    console.error('Usage: node index.js <oldManifest> <newManifest> <oldCatalog> <newCatalog> [outputExcel]');
     process.exit(1);
   }
-  const [oldManifestFile, newManifestFile, oldCatalogFile, newCatalogFile] = args;
+  const [oldManifestFile, newManifestFile, oldCatalogFile, newCatalogFile, outputExcel] = args;
   const resolveSample = file => path.resolve(__dirname, '../sample_json', file);
   const oldManifest = JSON.parse(fs.readFileSync(resolveSample(oldManifestFile), 'utf-8'));
   const newManifest = JSON.parse(fs.readFileSync(resolveSample(newManifestFile), 'utf-8'));
@@ -157,6 +158,19 @@ if (require.main === module) {
   console.log('Rendered Markdown:');
   console.log('========================');
   console.log(renderedMarkdown);
+  
+  // Excel報告書を生成（オプション指定がある場合）
+  if (outputExcel) {
+    const excelOutputPath = path.resolve(process.cwd(), outputExcel);
+    console.log(`Excelレポートを生成します: ${excelOutputPath}`);
+    generateExcelReport(projectDiffs, nodeDiffs, excelOutputPath)
+      .then(filePath => {
+        console.log(`Excelレポートが正常に生成されました: ${filePath}`);
+      })
+      .catch(err => {
+        console.error('Excelレポート生成中にエラーが発生しました:', err);
+      });
+  }
 }
 
 // Export functions for testing

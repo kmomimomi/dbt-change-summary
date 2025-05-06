@@ -7,7 +7,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "nunjucks": "^3.2.4"
+    "nunjucks": "^3.2.4",
+    "exceljs": "^4.3.0"
   },
   "devDependencies": {
     "jest": "^29.5.0"
