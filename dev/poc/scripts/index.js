@@ -158,3 +158,9 @@ if (require.main === module) {
   console.log('========================');
   console.log(renderedMarkdown);
 }
+
+// Export functions for testing
+module.exports = {
+    getMetadataDiffs,
+    getNodediff
+};

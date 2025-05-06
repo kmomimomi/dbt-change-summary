@@ -1,73 +1,92 @@
-const { summarize } = require('./index');
+const { getMetadataDiffs, getNodediff } = require('./index');
+const fs = require('fs');
+const path = require('path');
 
-describe('summarize function', () => {
-  test('reports added models and seeds', () => {
-    const diffs = [
-      { kind: 'N', path: ['nodes', 'mart_sample_2'], rhs: {} },
-      { kind: 'N', path: ['seeds', 'seed_sample_2'], rhs: {} },
-    ];
-    const output = summarize(diffs);
-    expect(output).toContain('## Added Models');
-    expect(output).toContain('- mart_sample_2');
-    expect(output).toContain('## Added Seeds');
-    expect(output).toContain('- seed_sample_2');
-  });
+// Helper to load JSON files
+const loadJSON = (filename) => {
+    const filePath = path.resolve(__dirname, '../sample_json', filename);
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+};
 
-  test('reports no additions when diffs empty', () => {
-    const output = summarize([]);
-    expect(output).toContain('No changes detected.');
-  });
+describe('getMetadataDiffs', () => {
+    test('detects added, removed, and modified metadata', () => {
+        const oldMetadata = { metadata: { key1: 'value1', key2: 'value2' } };
+        const newMetadata = { metadata: { key1: 'value1', key2: 'newValue2', key3: 'value3' } };
 
-  test('only models without seeds', () => {
-    const diffs = [ { kind: 'N', path: ['nodes', 'model_only'], rhs: {} } ];
-    const output = summarize(diffs);
-    expect(output).toContain('## Added Models');
-    expect(output).toContain('- model_only');
-    expect(output).not.toContain('## Added Seeds');
-  });
+        const diffs = getMetadataDiffs(oldMetadata, newMetadata);
+        
+        // Check that we have the expected number of diffs
+        expect(diffs.length).toBe(2);
+        
+        // Check that the right keys are identified as changed
+        const changedKeys = diffs.map(diff => diff.key);
+        expect(changedKeys).toContain('key2');
+        expect(changedKeys).toContain('key3');
+        
+        // Check specific diff entries
+        const modifiedDiff = diffs.find(diff => diff.key === 'key2');
+        const addedDiff = diffs.find(diff => diff.key === 'key3');
+        
+        expect(modifiedDiff.change).toBe('modified');
+        expect(addedDiff.change).toBe('added');
+    });
+});
 
-  test('only seeds without models', () => {
-    const diffs = [ { kind: 'N', path: ['seeds', 'seed_only'], rhs: {} } ];
-    const output = summarize(diffs);
-    expect(output).toContain('## Added Seeds');
-    expect(output).toContain('- seed_only');
-    expect(output).not.toContain('## Added Models');
-  });
+describe('getNodediff', () => {
+    test('detects node-level changes including added nodes', () => {
+        const oldManifest = loadJSON('old_manifest.json');
+        const newManifest = loadJSON('add_nodes_manifest.json');
+        const oldCatalog = loadJSON('old_catalog.json');
+        const newCatalog = loadJSON('add_nodes_catalog.json');
 
-  test('duplicate additions are deduplicated', () => {
-    const diffs = [
-      { kind: 'N', path: ['nodes', 'dup_model'], rhs: {} },
-      { kind: 'N', path: ['nodes', 'dup_model'], rhs: {} }
-    ];
-    const output = summarize(diffs);
-    // Should list model once
-    const matches = output.match(/- dup_model/g) || [];
-    expect(matches.length).toBe(1);
-  });
+        const diffs = getNodediff(oldManifest, newManifest, oldCatalog, newCatalog);
 
-  test('irrelevant diffs are ignored', () => {
-    const diffs = [ { kind: 'D', path: ['nodes', 'removed_model'], lhs: {} } ];
-    const output = summarize(diffs);
-    expect(output).toContain('No changes detected.');
-  });
+        // Check that added nodes are detected
+        const addedNodes = diffs.filter(diff => diff.change === 'added').map(diff => diff.key);
+        expect(addedNodes).toContain('model.sample.mart_sample_2');
+        expect(addedNodes).toContain('seed.sample.seed_sample_2');
+    });
 
-  test('reports modified models', () => {
-    const diffs = [
-      { kind: 'E', path: ['nodes', 'modelX', 'config', 'materialized'], lhs: 'view', rhs: 'table' }
-    ];
-    const output = summarize(diffs);
-    expect(output).toContain('## Modified Models');
-    expect(output).toContain('- modelX:');
-    expect(output).toContain('config.materialized changed from view to table');
-  });
+    test('detects column-level changes', () => {
+        const oldManifest = loadJSON('old_manifest.json');
+        const newManifest = loadJSON('add_columns_manifest.json');
+        const oldCatalog = loadJSON('old_catalog.json');
+        const newCatalog = loadJSON('add_columns_catalog.json');
 
-  test('reports modified seeds', () => {
-    const diffs = [
-      { kind: 'E', path: ['seeds', 'seedY', 'meta', 'owner'], lhs: 'alice', rhs: 'bob' }
-    ];
-    const output = summarize(diffs);
-    expect(output).toContain('## Modified Seeds');
-    expect(output).toContain('- seedY:');
-    expect(output).toContain('meta.owner changed from alice to bob');
-  });
+        const diffs = getNodediff(oldManifest, newManifest, oldCatalog, newCatalog);
+
+        // Find a diff for mart_sample_1
+        const martSampleDiff = diffs.find(diff => diff.key === 'model.sample.mart_sample_1');
+        expect(martSampleDiff).toBeDefined();
+        
+        // Check column changes
+        const columnChanges = martSampleDiff.columnChanges;
+        expect(columnChanges.length).toBeGreaterThan(0);
+        
+        // Check if specific column changes are detected
+        const addedColumn = columnChanges.find(change => change.changeType === '追加' && change.columnName === 'user_name');
+        const removedColumn = columnChanges.find(change => change.changeType === '削除' && change.columnName === 'name');
+        
+        expect(addedColumn).toBeDefined();
+        expect(removedColumn).toBeDefined();
+    });
+});
+
+describe('CLI logic', () => {
+    test('prepares data for rendering Markdown output', () => {
+        const oldManifest = loadJSON('old_manifest.json');
+        const newManifest = loadJSON('add_nodes_manifest.json');
+        const oldCatalog = loadJSON('old_catalog.json');
+        const newCatalog = loadJSON('add_nodes_catalog.json');
+
+        const projectDiffs = getMetadataDiffs(oldManifest, newManifest);
+        const nodeDiffs = getNodediff(oldManifest, newManifest, oldCatalog, newCatalog);
+
+        // Check that we have data to render
+        expect(nodeDiffs.length).toBeGreaterThan(0);
+        
+        // Check that the added nodes are in the diffs
+        const addedNodes = nodeDiffs.filter(diff => diff.change === 'added').map(diff => diff.key);
+        expect(addedNodes).toContain('model.sample.mart_sample_2');
+    });
 });
