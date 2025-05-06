@@ -64,4 +64,38 @@ source:sample.duckdb.views
 | 2 | add_nodes_manifest.json / add_nodes_catalog.json | model, seed を追加した状態(mart_sample_2, seed_sample_2) |
 | 3 | alter_nodes_manifest.json / alter_nodes_catalog.json | model, seed の設定を変更した状態(materialized, config, metaを一部変更) | 
 | 4 | add_columns_manifest.json / add_columns_catalog.json | model, seed にカラムを追加した状態(mart でカラム名変更と型変更、seedでカラム追加と型変更) |
-| 7 | project_manifest.json / project_catalog.json | dbt_projectの設定変更がされた状態 |
+| 5 | project_manifest.json / project_catalog.json | dbt_projectの設定変更がされた状態 |
+
+## 2. PRコメントに関するPoCの結果
+
+以下のコマンドを実行して、PRコメントの生成を試しました。
+
+```bash
+node index.js ../sample_json/old_manifest.json ../sample_json/add_nodes_manifest.json ../sample_json/old_catalog.json ../sample_json/add_nodes_catalog.json
+```
+
+### 実行結果
+
+以下は生成されたPRコメントの例です。
+
+```markdown
+### dbt Change Summary
+
+#### Added Models
+- `sample.mart.mart_sample_2`: A new model has been added.
+
+#### Added Seeds
+- `sample.intermediate.seed_sample_2`: A new seed has been added.
+
+#### Impacted Models
+No impacted models detected.
+
+#### Impacted Seeds
+No impacted seeds detected.
+
+#### Notes
+- Ensure that the new models and seeds are properly tested and documented.
+- Review the configurations for the added nodes to confirm alignment with project standards.
+```
+
+この結果から、追加されたモデルやシードが明確にリストアップされ、影響範囲が簡潔に示されていることが確認できました。これにより、PRレビュー時の効率化が期待できます。

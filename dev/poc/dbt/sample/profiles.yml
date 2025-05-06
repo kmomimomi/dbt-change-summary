@@ -4,3 +4,4 @@ sample:
     dev:
       type: duckdb
       schema: main  # Replace with your desired schema
+      path: sample.duckdb  # Replace with your desired database file path

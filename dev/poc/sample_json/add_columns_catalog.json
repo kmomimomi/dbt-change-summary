@@ -1,1 +1,167 @@
-{"metadata": {"dbt_schema_version": "https://schemas.getdbt.com/dbt/catalog/v1.json", "dbt_version": "1.9.4", "generated_at": "2025-05-05T04:19:45.788174Z", "invocation_id": "baa12a08-ed2f-4a2e-bd6e-a4634d8d4716", "env": {}}, "nodes": {}, "sources": {}, "errors": null}
+{
+    "metadata": {
+        "dbt_schema_version": "https://schemas.getdbt.com/dbt/catalog/v1.json",
+        "dbt_version": "1.9.4",
+        "generated_at": "2025-05-05T12:44:04.604940Z",
+        "invocation_id": "1e040dbb-cf53-4f27-95da-a69192b49ae8",
+        "env": {}
+    },
+    "nodes": {
+        "model.sample.int_sample_1": {
+            "metadata": {
+                "type": "BASE TABLE",
+                "schema": "main",
+                "name": "int_sample_1",
+                "database": "sample",
+                "comment": null,
+                "owner": null
+            },
+            "columns": {
+                "id": {
+                    "type": "INTEGER",
+                    "index": 1,
+                    "name": "id",
+                    "comment": null
+                },
+                "name": {
+                    "type": "VARCHAR",
+                    "index": 2,
+                    "name": "name",
+                    "comment": null
+                },
+                "created_at": {
+                    "type": "TIMESTAMP",
+                    "index": 3,
+                    "name": "created_at",
+                    "comment": null
+                }
+            },
+            "stats": {
+                "has_stats": {
+                    "id": "has_stats",
+                    "label": "Has Stats?",
+                    "value": false,
+                    "include": false,
+                    "description": "Indicates whether there are statistics for this table"
+                }
+            },
+            "unique_id": "model.sample.int_sample_1"
+        },
+        "model.sample.mart_sample_1": {
+            "metadata": {
+                "type": "VIEW",
+                "schema": "main",
+                "name": "mart_sample_1",
+                "database": "sample",
+                "comment": null,
+                "owner": null
+            },
+            "columns": {
+                "id": {
+                    "type": "VARCHAR",
+                    "index": 1,
+                    "name": "id",
+                    "comment": null
+                },
+                "user_name": {
+                    "type": "VARCHAR",
+                    "index": 2,
+                    "name": "user_name",
+                    "comment": null
+                },
+                "created_at": {
+                    "type": "TIMESTAMP",
+                    "index": 3,
+                    "name": "created_at",
+                    "comment": null
+                }
+            },
+            "stats": {
+                "has_stats": {
+                    "id": "has_stats",
+                    "label": "Has Stats?",
+                    "value": false,
+                    "include": false,
+                    "description": "Indicates whether there are statistics for this table"
+                }
+            },
+            "unique_id": "model.sample.mart_sample_1"
+        },
+        "seed.sample.seed_sample_1": {
+            "metadata": {
+                "type": "BASE TABLE",
+                "schema": "main",
+                "name": "seed_sample_1",
+                "database": "sample",
+                "comment": null,
+                "owner": null
+            },
+            "columns": {
+                "id": {
+                    "type": "VARCHAR",
+                    "index": 1,
+                    "name": "id",
+                    "comment": null
+                },
+                "name": {
+                    "type": "VARCHAR",
+                    "index": 2,
+                    "name": "name",
+                    "comment": null
+                }
+            },
+            "stats": {
+                "has_stats": {
+                    "id": "has_stats",
+                    "label": "Has Stats?",
+                    "value": false,
+                    "include": false,
+                    "description": "Indicates whether there are statistics for this table"
+                }
+            },
+            "unique_id": "seed.sample.seed_sample_1"
+        },
+        "model.sample.staging_sample_1": {
+            "metadata": {
+                "type": "VIEW",
+                "schema": "main",
+                "name": "staging_sample_1",
+                "database": "sample",
+                "comment": null,
+                "owner": null
+            },
+            "columns": {
+                "id": {
+                    "type": "INTEGER",
+                    "index": 1,
+                    "name": "id",
+                    "comment": null
+                },
+                "name": {
+                    "type": "VARCHAR",
+                    "index": 2,
+                    "name": "name",
+                    "comment": null
+                },
+                "created_at": {
+                    "type": "TIMESTAMP",
+                    "index": 3,
+                    "name": "created_at",
+                    "comment": null
+                }
+            },
+            "stats": {
+                "has_stats": {
+                    "id": "has_stats",
+                    "label": "Has Stats?",
+                    "value": false,
+                    "include": false,
+                    "description": "Indicates whether there are statistics for this table"
+                }
+            },
+            "unique_id": "model.sample.staging_sample_1"
+        }
+    },
+    "sources": {},
+    "errors": null
+}
