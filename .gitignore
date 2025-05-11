@@ -1,39 +1,39 @@
-# macOS
-.DS_Store
-
-# Python virtual environment
-.venv/
-venv/
-*/.venv/
-*/venv/
-
-# Python cache
-__pycache__/
-*.py[cod]
-*.so
-
-# dbt/duckdb artifacts
-*.duckdb
-dbt.log
-logs/
-poc/logs/
-
-# dbt target directories
-sample_dbt_project/target/
-
-# Node.js
+# Dependency directories
 node_modules/
+
+# Build directories
+dist/
+lib/
+coverage/
+
+# Local development
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# VSCode
+# Editor directories and files
+.idea/
 .vscode/
-
-# Temporary files
-*.tmp
 *.swp
+*.swo
 
-# Environment files
-.env
-.env.*
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jest
+jest-results.json
