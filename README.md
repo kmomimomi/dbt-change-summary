@@ -1,110 +1,54 @@
 # dbt-change-summary
 
-GitHub Action to analyze dbt project changes, generate PR comments, and create
-Excel reports for releases.
+dbt (data build tool) プロジェクトの変更を自動的に分析し、レポートを生成するGitHub Actionsツール。
 
-## Overview
+## 機能
 
-This GitHub Action helps dbt users by:
+1. **PRコメント生成**: プルリクエストにdbt変更のサマリーを自動的にコメント
+2. **Excelレポート生成**: mainブランチへのマージ時に詳細な変更レポートをExcel形式で作成
 
-1. **PR Comment Generation**: Automatically analyzes changes in dbt models and
-   creates a detailed comment on pull requests, listing changes to:
-   - Project-level settings
-   - Model/seed additions, deletions, and modifications
-   - Column-level changes
 
-2. **Excel Report Generation**: Creates comprehensive Excel reports with model
-   inventories and uploads them to GitHub Releases when changes are merged.
+## 開発状況
 
-## Actions
+🚧 **現在、Denoベースで再構築中です** 🚧
 
-This repository provides two separate actions:
+## 必要要件
 
-### 1. PR Comment Action
+- [Deno](https://deno.land/) v1.40以上
 
-Triggered when a PR is created or updated, this action compares manifest.json
-files and posts a summary comment.
-
-```yaml
-# Example workflow using PR Comment action
-name: DBT PR Comment
-
-on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - "models/**"
-      - "seeds/**"
-      - "dbt_project.yml"
-
-jobs:
-  summarize_changes:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Generate DBT PR Comment
-        uses: your-username/dbt-change-summary/pr-comment@v1
-        with:
-          old_manifest_path: "path/to/old/manifest.json"
-          new_manifest_path: "target/manifest.json"
-          old_catalog_path: "path/to/old/catalog.json"
-          new_catalog_path: "target/catalog.json"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-### 2. Release Excel Action
-
-Triggered when changes are merged to main, this action creates an Excel report
-and uploads it to the GitHub Release.
-
-```yaml
-# Example workflow using Release Excel action
-name: DBT Release Excel
-
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - "models/**"
-      - "seeds/**"
-      - "dbt_project.yml"
-
-jobs:
-  create_model_inventory:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Generate DBT Excel Report
-        uses: your-username/dbt-change-summary/release-excel@v1
-        with:
-          manifest_path: "target/manifest.json"
-          catalog_path: "target/catalog.json"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-## Development
-
-### Prerequisites
-
-- Node.js 16+
-- npm or yarn
-
-### Setup
+## インストール
 
 ```bash
-# Install dependencies
-npm install
+# Denoのインストール（macOS/Linux）
+curl -fsSL https://deno.land/install.sh | sh
 
-# Build the project
-npm run build
-
-# Run tests
-npm test
+# Denoのインストール（Windows）
+irm https://deno.land/install.ps1 | iex
 ```
 
-## License
+## 開発
 
-MIT
+```bash
+# 開発モードで実行
+deno task dev
+
+# テストの実行
+deno task test
+
+# コードフォーマット
+deno task fmt
+
+# リンターの実行
+deno task lint
+
+# すべてのチェック
+deno task check
+```
+
+## アーキテクチャ
+
+詳細は[Architecture Decision Records](docs/adr/)を参照してください。
+
+## ライセンス
+
+MIT License - 詳細は[LICENSE](LICENSE)を参照してください。

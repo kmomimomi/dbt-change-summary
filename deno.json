@@ -1,0 +1,26 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --allow-read --allow-net --allow-env src/main.ts",
+    "test": "deno test --allow-read",
+    "fmt": "deno fmt",
+    "lint": "deno lint",
+    "check": "deno fmt --check && deno lint && deno test --allow-read"
+  },
+  "imports": {
+    "@/": "./src/",
+    "@octokit/rest": "https://esm.sh/@octokit/rest@20.0.2",
+    "exceljs": "https://esm.sh/exceljs@4.4.0",
+    "yaml": "https://deno.land/std@0.213.0/yaml/mod.ts"
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "semiColons": true,
+    "singleQuote": false
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}
