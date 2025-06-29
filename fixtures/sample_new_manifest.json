@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12.json",
+    "dbt_version": "1.6.0",
+    "generated_at": "2024-01-02T00:00:00.000000Z",
+    "invocation_id": "new-test-id",
+    "env": {}
+  },
+  "nodes": {
+    "model.my_project.users": {
+      "database": "analytics",
+      "schema": "dbt_test",
+      "name": "users",
+      "resource_type": "model",
+      "package_name": "my_project",
+      "path": "users.sql",
+      "original_file_path": "models/users.sql",
+      "unique_id": "model.my_project.users",
+      "fqn": ["my_project", "users"],
+      "alias": "users",
+      "config": {
+        "materialized": "table"
+      },
+      "tags": [],
+      "description": "Updated user data with more details",
+      "columns": {
+        "id": {
+          "name": "id",
+          "description": "User ID",
+          "meta": {},
+          "data_type": "bigint",
+          "constraints": [],
+          "quote": null,
+          "tags": []
+        },
+        "name": {
+          "name": "name",
+          "description": "Full user name",
+          "meta": {},
+          "data_type": "varchar",
+          "constraints": [],
+          "quote": null,
+          "tags": []
+        },
+        "email": {
+          "name": "email",
+          "description": "User email address",
+          "meta": {},
+          "data_type": "varchar",
+          "constraints": [],
+          "quote": null,
+          "tags": []
+        }
+      },
+      "meta": {}
+    },
+    "model.my_project.orders": {
+      "database": "analytics",
+      "schema": "dbt_test",
+      "name": "orders",
+      "resource_type": "model",
+      "package_name": "my_project",
+      "path": "orders.sql",
+      "original_file_path": "models/orders.sql",
+      "unique_id": "model.my_project.orders",
+      "fqn": ["my_project", "orders"],
+      "alias": "orders",
+      "config": {
+        "materialized": "view"
+      },
+      "tags": [],
+      "description": "Order transaction data",
+      "columns": {
+        "id": {
+          "name": "id",
+          "description": "Order ID",
+          "meta": {},
+          "data_type": "bigint",
+          "constraints": [],
+          "quote": null,
+          "tags": []
+        },
+        "user_id": {
+          "name": "user_id",
+          "description": "Reference to user",
+          "meta": {},
+          "data_type": "bigint",
+          "constraints": [],
+          "quote": null,
+          "tags": []
+        }
+      },
+      "meta": {}
+    }
+  },
+  "sources": {},
+  "macros": {},
+  "docs": {},
+  "exposures": {},
+  "metrics": {},
+  "groups": {},
+  "selectors": {},
+  "disabled": {},
+  "parent_map": {},
+  "child_map": {},
+  "group_map": {}
+}
